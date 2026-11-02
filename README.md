@@ -47,7 +47,7 @@ Big platforms like Spotify and YouTube mix two ideas. **Collaborative filtering*
 ### Default taste profile
 
 ```python
-user_prefs = {"genre": "pop", "mood": "happy", "energy": 0.8, "likes_acoustic": False}
+user_prefs = {"favorite_genre": "pop", "favorite_mood": "happy", "target_energy": 0.8, "likes_acoustic": False}
 ```
 
 ### Algorithm Recipe
@@ -119,15 +119,35 @@ You can add more tests in `tests/test_recommender.py`.
 
 ## Sample Recommendation Output
 
-Paste a sample of your recommender's output here as a text block so a reader can see what it produces:
+Output of `python -m src.main` with the default pop/happy profile:
 
 ```
-# e.g.:
-# User profile: genre=indie, mood=chill, energy=low
-# Recommendations:
-#   1. ...
-#   2. ...
-#   3. ...
+Loading songs from data/songs.csv...
+Loaded songs: 18
+
+Profile: {'favorite_genre': 'pop', 'favorite_mood': 'happy', 'target_energy': 0.8, 'likes_acoustic': False}
+
+Top recommendations:
+
+1. Sunrise City by Neon Echo (pop, happy)
+   Score: 4.48
+   Because: genre match (+2.0), mood match (+1.0), energy closeness (+0.98), acoustic fit (+0.5)
+
+2. Gym Hero by Max Pulse (pop, intense)
+   Score: 3.37
+   Because: genre match (+2.0), energy closeness (+0.87), acoustic fit (+0.5)
+
+3. Rooftop Lights by Indigo Parade (indie pop, happy)
+   Score: 2.46
+   Because: mood match (+1.0), energy closeness (+0.96), acoustic fit (+0.5)
+
+4. Concrete Crown by Lyric Theory (hip hop, confident)
+   Score: 1.48
+   Because: energy closeness (+0.98), acoustic fit (+0.5)
+
+5. Night Drive Loop by Neon Echo (synthwave, moody)
+   Score: 1.45
+   Because: energy closeness (+0.95), acoustic fit (+0.5)
 ```
 
 **Screenshot or video** *(optional)*: <!-- Insert a screenshot or demo video link here -->
