@@ -17,17 +17,28 @@ Replace this paragraph with your own summary of what your version does.
 
 ## How The System Works
 
-Explain your design in plain language.
+### How real recommenders work (and what mine does)
 
-Some prompts to answer:
+Big platforms like Spotify and YouTube mix two ideas. **Collaborative filtering** uses other people's behavior: if listeners who share your history also love a song you haven't heard, it gets suggested to you. **Content-based filtering** uses the songs themselves (genre, mood, tempo, energy, how acoustic they sound) and finds tracks similar to what you already like. Real systems feed in explicit signals (likes, saves, playlist adds), implicit signals (skips, replays, how long you listen), and audio features. They score a huge pool of candidates and then rank the best few. My version is a small **content-based** recommender only. There are no other users to learn from, so it compares each song's attributes to one user's taste profile. It prioritizes **genre** first, **mood** second, and then how **close** the song's energy is to what the user wants.
 
-- What features does each `Song` use in your system
-  - For example: genre, mood, energy, tempo
-- What information does your `UserProfile` store
-- How does your `Recommender` compute a score for each song
-- How do you choose which songs to recommend
+### Features used
 
-You can include a simple diagram or bullet list if helpful.
+**`Song`**
+
+- `genre`: pop, lofi, rock, etc.
+- `mood`: happy, chill, intense, etc.
+- `energy`: 0.0 (calm) to 1.0 (intense)
+- `acousticness`: 0.0 (electronic) to 1.0 (acoustic)
+- `id`, `title`, `artist`: for display only, not scored
+
+`tempo_bpm`, `valence`, and `danceability` are loaded but not scored. In this catalog, tempo and danceability rise and fall with energy (correlations of 0.96 and 0.86), so scoring them would mostly count energy twice.
+
+**`UserProfile`**
+
+- `favorite_genre`
+- `favorite_mood`
+- `target_energy`: a number from 0.0 to 1.0
+- `likes_acoustic`: True or False
 
 ---
 
