@@ -11,7 +11,7 @@ Your goal is to:
 - Evaluate what your system gets right and wrong
 - Reflect on how this mirrors real world AI recommenders
 
-Replace this paragraph with your own summary of what your version does.
+My version, **VibeMatch 1.0**, is a small content-based recommender. It loads 18 songs from `data/songs.csv` and scores each one against a user's taste profile: favorite genre, favorite mood, target energy, and whether they like acoustic music. It then prints the top 5 with the reasons behind each score. I tested it on five profiles, including two edge cases, and ran one weight experiment. The biggest finding is that genre is weighted so heavily it can override the mood a user asked for. See the [model card](model_card.md) for the full evaluation.
 
 ---
 
@@ -156,25 +156,23 @@ Top recommendations:
 
 ## Experiments You Tried
 
-Use this section to document the experiments you ran. For example:
+- **Weight shift (genre 2.0 → 1.0, energy max 1.0 → 2.0):** The pop fan's list improved: *Rooftop Lights* (happy) moved above *Gym Hero* (intense). The "Sad but Hyped" list got worse, because the only sad song dropped out of the top 5. The other three profiles kept the same order. I put the original weights back afterward.
+- **Different types of users:** I ran High-Energy Pop, Chill Lofi, and Deep Intense Rock, plus two edge cases: "Sad but Hyped" (edm, sad, energy 0.9) and "Genre Not in Catalog" (k-pop). Users whose preferences all agree got sensible lists. The conflicting user got a euphoric song at #1. The k-pop user, with no genre matches at all, got a more sensible list than the pop fan.
+- **Expanding the dataset:** In the starter songs, energy and acousticness were almost perfectly linked (correlation −0.99), so the acoustic preference barely mattered. Adding 8 songs, including a loud acoustic one and a quiet electronic one, brought that down to −0.71, so the acoustic preference now changes the rankings.
 
-- What happened when you changed the weight on genre from 2.0 to 0.5
-- What happened when you added tempo or valence to the score
-- How did your system behave for different types of users
+Full outputs and profile-by-profile comparisons are in section 7 of the [model card](model_card.md).
 
 ---
 
 ## Limitations and Risks
 
-Summarize some limitations of your recommender.
+- **Tiny, made-up catalog:** 18 songs, and 12 of the 15 genres have only one song.
+- **Genre dominates:** A +2.0 genre match can beat a song with the right mood and energy. That's why *Gym Hero* beats *Rooftop Lights* for a happy pop fan.
+- **Exact labels only:** "indie pop" gets no credit for "pop", and "chill" gets none for "relaxed".
+- **Same songs everywhere:** *Sunrise City*, *Gym Hero*, and *Storm Runner* each appear in 3 of the 5 test lists.
+- **Missing signals:** It doesn't use lyrics, language, popularity, or listening history, and each user can have only one favorite genre and mood.
 
-Examples:
-
-- It only works on a tiny catalog
-- It does not understand lyrics or language
-- It might over favor one genre or mood
-
-You will go deeper on this in your model card.
+More detail is in section 6 of the [model card](model_card.md).
 
 ---
 
@@ -184,10 +182,11 @@ Read and complete `model_card.md`:
 
 [**Model Card**](model_card.md)
 
-Write 1 to 2 paragraphs here about what you learned:
+✏️ *Draft. Rewrite in your own words.*
 
-- about how recommenders turn data into predictions
-- about where bias or unfairness could show up in systems like this
+A recommender doesn't "know" music. It turns each song into a few labels and numbers, compares them to labels and numbers describing the user, and adds up points. Ranking is just sorting those totals. What makes it feel smart is the explanation: seeing "genre match (+2.0), mood match (+1.0)" makes a simple sum look like a judgment. Real platforms do the same basic thing at a much bigger scale, adding signals like skips, replays, and what other users with similar taste listen to.
+
+Bias comes in through choices that look harmless. One weight (+2.0 for genre) meant a listener who asked for sad music got a euphoric song first. A catalog where most genres have one song means fans of those genres get worse lists than lofi or pop fans. Exact label matching means anyone whose taste falls between categories, like "indie pop", gets less credit. In a real app, the same kinds of choices could decide which artists get heard and which get buried.
 
 
 
